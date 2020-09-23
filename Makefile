@@ -1,6 +1,6 @@
 
 #CC65_DIR := cc65-nes-2.13.3-1
-CC65_DIR := cc65
+CC65_DIR := ~/repos/cc65
 
 CC := $(CC65_DIR)/bin/cc65
 CA := $(CC65_DIR)/bin/ca65
@@ -19,6 +19,10 @@ TARGETS += example8.nes
 TARGETS += example9.nes
 TARGETS += example10.nes
 TARGETS += example11.nes
+TARGETS += seppi1.nes
+
+java=/usr/local/opt/openjdk/bin/java
+nintaco=/Applications/Nintaco_bin_2020-05-01/Nintaco.jar
 
 EMULATOR ?= higan
 
@@ -35,7 +39,7 @@ C_SOURCES := $(TARGETS:.nes=.c)
 
 # Make sure intermediate files are *NOT* deleted
 # Yes. GNU make is a rat's nest
-.PRECIOUS: %.s %.o
+.PRECIOUS: %.s %.o %.nes
 
 all: $(CC) $(TARGETS)
 
@@ -44,7 +48,8 @@ $(CC):
 	cd $(CC65_DIR) && $(MAKE)
 
 %: %.nes
-	$(EMULATOR) $<
+	#$(EMULATOR) $<
+	${java} -jar ${nintaco} "$<"
 
 clean:
 	@rm -fv $(TARGETS)
